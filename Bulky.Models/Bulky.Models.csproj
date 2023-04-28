@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ChatGPT" Version="1.0.0-preview.17" />
+  </ItemGroup>
+
 </Project>

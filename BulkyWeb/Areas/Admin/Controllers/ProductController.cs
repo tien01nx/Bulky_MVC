@@ -6,30 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
-            return View(objCategoryList);
+            List<Product> objProductList = _unitOfWork.Producdt.GetAll().ToList();
+            return View(objProductList);
         }
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Category category)
+        public IActionResult Create(Product product)
         {
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(category);
+                _unitOfWork.Producdt.Add(product);
                 _unitOfWork.Save();
                 TempData["success"] = "Them thanh cong";
                 return RedirectToAction("Index");
@@ -43,20 +43,20 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
-            if (categoryFromDb == null)
+            Product? productFromDb = _unitOfWork.Producdt.Get(u => u.Id == id);
+            if (productFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(productFromDb);
         }
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(Product product)
         {
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(category);
+                _unitOfWork.Producdt.Update(product);
                 _unitOfWork.Save();
                 TempData["success"] = "Update thanh cong";
                 return RedirectToAction("Index");
@@ -70,22 +70,22 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
-            if (categoryFromDb == null)
+            Product? productFromDb = _unitOfWork.Producdt.Get(u => u.Id == id);
+            if (productFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(productFromDb);
         }
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Category? category = _unitOfWork.Category.Get(u => u.Id == id);
-            if (category == null)
+            Product? product = _unitOfWork.Producdt.Get(u => u.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Producdt.Remove(product);
             _unitOfWork.Save();
             TempData["success"] = "Delete thanh cong";
             return RedirectToAction("Index");

@@ -31,6 +31,23 @@
                         <li class="nav-item">
                             <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Content Managent
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                                </li>
+                             
+                                <li><hr class="dropdown-divider"></li>
+                              
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +61,7 @@
 
     <footer class="border-top footer bg-primary text-muted">
         <div class="container text-center">
-            Made with <i class="bi bi-heart-fill"></i> by DotnetMastery
+            Made with <i class="bi bi-heart-fill"></i> by Tien01nx
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
