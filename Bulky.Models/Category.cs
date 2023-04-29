@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bulky.Models
@@ -7,6 +8,7 @@ namespace Bulky.Models
     // Tạo bảng để lưu csdl trong sql
     public class Category
     {
+       
         [Key]
         public int Id { get; set; }
         [Required]
