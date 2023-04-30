@@ -56,7 +56,7 @@ namespace Bulky.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-           return query.ToList();
+            return query.ToList();
         }
 
         public void Remove(T entity)
