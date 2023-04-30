@@ -1,4 +1,5 @@
 ﻿using Bulky.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bulky.DataAccess
@@ -6,7 +7,7 @@ namespace Bulky.DataAccess
 
     // kế thừa từ DbContext
     // DbContext đại diện cho một phiên làm việc với cơ sở dữ liệu
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         // Tạo và kết nối cơ sở dữ liệu 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base (options)
@@ -23,9 +24,12 @@ namespace Bulky.DataAccess
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ApplicationUser> applicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
         {
+
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().HasData(new
                 Category
             { Id = 1, Name = "Action", DisplayOrder = 1 },
