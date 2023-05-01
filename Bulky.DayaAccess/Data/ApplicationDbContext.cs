@@ -24,7 +24,16 @@ namespace Bulky.DataAccess
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<ShoppingCart> shoppingCarts { get; set; }
+
         public DbSet<ApplicationUser> applicationUsers { get; set; }
+
+        public DbSet<OrderHeader> orderHeaders { get; set; }
+
+        public DbSet<OrderDetail> orderDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
         {
@@ -127,6 +136,17 @@ namespace Bulky.DataAccess
                 }
 
                 );
+
+            modelBuilder.Entity<Company>().HasData(new
+              Company
+            { Id = 1, Name = "Tech Solution", StreetAddress = "96 Dinh cong", City = "Ha Noi", PostalCode = "12221", State = "SL", PhoneNumber = "9847654321" },
+              new
+              Company
+              { Id = 2, Name = "Manhnv", StreetAddress = "96 Dinh cong", City = "Ha Noi", PostalCode = "12221", State = "SL", PhoneNumber = "9847654321" },
+              new
+              Company
+              { Id = 3, Name = "DiuThanh", StreetAddress = "12 Dinh cong", City = "Ha Noi", PostalCode = "1112", State = "SL", PhoneNumber = "9847654321" });
+
         }
     }
 }
