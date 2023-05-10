@@ -9,8 +9,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
 
- /*   // phan quyen admin
-    [Authorize(Roles =SD.Role_Admin)]*/
+    // phan quyen admin
+    [Authorize(Roles =SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -1,11 +1,14 @@
-﻿using Bulky.DataAccess.Repository.IRepository;
+﻿using AspNetCore;
+using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 using System.Security.Claims;
+using Microsoft.AspNetCore;
 
 namespace BulkyWeb.Areas.Customer.Controllers
 {
@@ -16,15 +19,24 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
 
         private readonly IUnitOfWork _unitOfWork;
+     /*   private readonly IEmailSender _emailSender;*/
         // tụ động điền dữ liệu khi có yêu cầu http
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
 
+   /*     public CartController(IUnitOfWork unitOfWork,IEmailSender emailSender)
+        {
+
+
+            _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
+        }*/
         public CartController(IUnitOfWork unitOfWork)
         {
 
 
             _unitOfWork = unitOfWork;
+            /*  _emailSender = emailSender;*/
         }
         public IActionResult Index()
         {
@@ -43,6 +55,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
             return View(ShoppingCartVM);
         }
+      
 
         public IActionResult Summary()
         {
@@ -197,9 +210,13 @@ namespace BulkyWeb.Areas.Customer.Controllers
                     _unitOfWork.OrderHeader.UpdateStripePaymentID(id,session.Id,session.PaymentIntentId);
                     _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
+                    
                 }
+             
             
             }
+          //  _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New order - Bulky book", $"<p> New Order Created -{orderHeader.Id}</p>");
+
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();

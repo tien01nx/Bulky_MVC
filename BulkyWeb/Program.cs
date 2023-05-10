@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
+using Azure.Core;
+using Bulky.DataAccess.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,12 +32,33 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+
+builder.Services.AddAuthentication().AddFacebook(option =>
+{
+    option.AppId = "1664891260599422";
+    option.AppSecret = "f824d99c013c31018f3d6c5f001c9486";
+});
+
+
+//  phiên đăng nhập được lưu trữ trong bộ nhớ
+builder.Services.AddDistributedMemoryCache();
+//Session trong ứng dụng. Session được sử dụng để lưu trữ dữ liệu trên toàn bộ các yêu cầu HTTP
+//của một user, nó cho phép lưu trữ các thông tin người dùng
+//như giỏ hàng, lịch sử truy cập, thông tin đăng nhập, v.v. trong khi người dùng đang duyệt web trang
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100); // thời gian hoạt động của sesion hết hạn là 100 giây
+    options.Cookie.HttpOnly = true; //giới hạn truy cập của cookie trong HTTP requests
+    options.Cookie.IsEssential = true; //xác định cookie là bắt buộc hay không để sử dụng cho Session
+});
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 //để xây dựng ứng dụng và lưu vào biến app.
 var app = builder.Build();
 
@@ -61,6 +84,9 @@ app.UseAuthentication();
 //Kích hoạt hệ thống ủy quyền, cho phép bảo vệ các tài nguyên dựa trên chính sách và đường dẫn.
 app.UseAuthorization();
 
+app.UseSession();
+SeedDatabase();
+
 app.MapRazorPages();
 
 /*app.MapControllerRoute(
@@ -74,3 +100,13 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInittializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInittializer.Initialize();
+    }
+}
